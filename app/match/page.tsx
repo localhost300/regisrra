@@ -1,0 +1,1 @@
+import MatchWizard from '@/components/MatchWizard';export const metadata={title:'Find your advisor match'};export default function Match(){return <section className="match-page"><MatchWizard/></section>}

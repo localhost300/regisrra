@@ -1,0 +1,1 @@
+import Onboarding from '@/components/Onboarding';export const metadata={title:'Create your advisor profile'};export default function Page(){return <div className="onboarding-page"><Onboarding/></div>}
