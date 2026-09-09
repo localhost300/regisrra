@@ -1,1 +1,2 @@
-import type {MetadataRoute} from 'next';export default function robots():MetadataRoute.Robots{return {rules:{userAgent:'*',allow:'/',disallow:['/admin','/dashboard','/advisor/dashboard']},sitemap:'https://advisor-registry.example/sitemap.xml'}}
+import type {MetadataRoute} from 'next';import {siteConfig} from '@/lib/site';
+export default function robots():MetadataRoute.Robots{return{rules:[{userAgent:'*',allow:'/',disallow:['/admin/','/dashboard/','/advisor/dashboard/','/advisor/onboarding/']}],sitemap:`${siteConfig.url}/sitemap.xml`,host:siteConfig.url}}

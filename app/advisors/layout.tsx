@@ -1,0 +1,3 @@
+import type {Metadata} from 'next';
+export const metadata:Metadata={title:'Financial Professional Directory',description:'Browse financial professionals and review experience, firm affiliation, location, and public registration details.',alternates:{canonical:'/advisors'},openGraph:{title:'Financial Professional Directory | Advisor Registry',description:'Research financial professionals using clear profile information and links to official registration records.',url:'/advisors'},twitter:{card:'summary_large_image'}};
+export default function AdvisorsLayout({children}:{children:React.ReactNode}){return children}
