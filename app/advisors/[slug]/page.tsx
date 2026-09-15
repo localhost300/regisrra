@@ -5,8 +5,6 @@ import { advisors } from '@/lib/data';
 import { siteConfig } from '@/lib/site';
 import ContactModal from '@/components/ContactModal';
 
-const brokerCheck = 'https://brokercheck.finra.org/individual/summary/3047528';
-
 export function generateStaticParams() {
   return advisors.map((advisor) => ({ slug: advisor.slug }));
 }
@@ -16,8 +14,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const advisor = advisors.find((item) => item.slug === slug);
   if (!advisor) return { title: 'Advisor profile' };
   const canonical = `/advisors/${advisor.slug}`;
-  const title = `${advisor.name} — Financial Advisor Profile`;
-  const description = `Research ${advisor.name}, a ${advisor.location} financial professional with ${advisor.years} years of experience. Review firm and FINRA BrokerCheck details.`;
+  const title = `${advisor.name} — ${advisor.firm} Broker Profile`;
+  const description = `Research ${advisor.name}, CRD ${advisor.crd}, a ${advisor.location} ${advisor.title.toLowerCase()} with ${advisor.years} years of experience at ${advisor.firm}.`;
   return {
     title,
     description,
@@ -27,8 +25,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description,
       url: canonical,
       type: 'profile',
-      firstName: 'Jason',
-      lastName: 'Salgado',
+      firstName: advisor.firstName,
+      lastName: advisor.lastName,
       images: [{ url: `${canonical}/opengraph-image`, width: 1200, height: 630, alt: `${advisor.name} professional profile` }],
     },
     twitter: { card: 'summary_large_image', title, description, images: [`${canonical}/opengraph-image`] },
@@ -40,6 +38,7 @@ export default async function Profile({ params }: { params: Promise<{ slug: stri
   const { slug } = await params;
   const advisor = advisors.find((item) => item.slug === slug);
   if (!advisor) notFound();
+  const brokerCheck = `https://brokercheck.finra.org/individual/summary/${advisor.crd}`;
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Person',
@@ -51,11 +50,11 @@ export default async function Profile({ params }: { params: Promise<{ slug: stri
     worksFor: { '@type': 'Organization', name: advisor.firm },
     workLocation: {
       '@type': 'Place',
-      address: { '@type': 'PostalAddress', addressLocality: 'New York', addressRegion: 'NY', addressCountry: 'US' },
+      address: { '@type': 'PostalAddress', streetAddress: advisor.streetAddress, addressLocality: advisor.city, addressRegion: advisor.region, postalCode: advisor.postalCode, addressCountry: 'US' },
     },
     knowsAbout: advisor.specialties,
     sameAs: [brokerCheck],
-    identifier: { '@type': 'PropertyValue', name: 'FINRA CRD', value: '3047528' },
+    identifier: { '@type': 'PropertyValue', name: 'FINRA CRD', value: advisor.crd },
   };
 
   return (
@@ -96,32 +95,29 @@ export default async function Profile({ params }: { params: Promise<{ slug: stri
             <p className="kicker">Registration snapshot</p>
             <h2>Current registration details</h2>
             <div className="service-grid">
-              <div><span>01</span><h3>1 FINRA registration</h3><p>Current registration information is available through FINRA BrokerCheck.</p></div>
-              <div><span>02</span><h3>46 state licenses</h3><p>State licensing count supplied from the current profile summary.</p></div>
-              <div><span>03</span><h3>1 firm</h3><p>{advisor.firm}</p></div>
-              <div><span>04</span><h3>CRD 3047528</h3><p>Unique Central Registration Depository identifier.</p></div>
+              <div><span>01</span><h3>{advisor.finraRegistrations} FINRA {advisor.finraRegistrations === 1 ? 'registration' : 'registrations'}</h3><p>Current registration categories are available through FINRA BrokerCheck.</p></div>
+              <div><span>02</span><h3>{advisor.stateLicenses} state licenses</h3><p>U.S. state and territory licensing count from the current FINRA report.</p></div>
+              <div><span>03</span><h3>{advisor.firms} {advisor.firms === 1 ? 'firm' : 'firms'}</h3><p>Current and previous FINRA-registered firms.</p></div>
+              <div><span>04</span><h3>CRD {advisor.crd}</h3><p>Unique Central Registration Depository identifier.</p></div>
             </div>
           </section>
           <section id="qualifications">
             <p className="kicker">Experience &amp; qualifications</p>
-            <h2>27 years of experience</h2>
-            <div className="timeline"><div><b>{advisor.firm}</b><span>Current registered firm</span><small>Registration history begins in 1997</small></div></div>
-            <p>FINRA’s report lists two general industry/product exams and one state securities law exam passed. Consult the current BrokerCheck report for complete exam and jurisdiction details.</p>
+            <h2>{advisor.years} years of experience</h2>
+            <div className="timeline"><div><b>{advisor.firm}</b><span>Current registered firm</span><small>Registration history begins in {advisor.registrationSince}</small></div></div>
+            <p>FINRA’s report lists {advisor.exams} securities industry exams passed and {advisor.sroRegistrations} current self-regulatory organization registrations. Consult the current BrokerCheck report for complete exam and jurisdiction details.</p>
           </section>
           <section id="services">
             <p className="kicker">Services</p>
             <h2>Financial guidance for every stage.</h2>
             <div className="service-grid">
-              <div><span>01</span><h3>Retirement Planning</h3></div>
-              <div><span>02</span><h3>Investment Management</h3></div>
-              <div><span>03</span><h3>Wealth Preservation and Legacy Planning</h3></div>
-              <div><span>04</span><h3>Business Financial Consulting</h3></div>
+              {advisor.services.map((service, index) => <div key={service}><span>{String(index + 1).padStart(2, '0')}</span><h3>{service}</h3></div>)}
             </div>
           </section>
           <section id="disclosures">
             <p className="kicker">Disclosure record</p>
-            <h2>0 disclosures reported</h2>
-            <div className="credentials"><div><FileCheck2 /><span>The current FINRA BrokerCheck summary reports no disclosure events. Always review the official record for the latest information.</span></div></div>
+            <h2>{advisor.disclosures} disclosures reported</h2>
+            <div className="credentials"><div><FileCheck2 /><span>The current FINRA BrokerCheck summary reports {advisor.disclosures === 0 ? 'no disclosure events' : `${advisor.disclosures} disclosure events`}. Always review the official record for the latest information.</span></div></div>
           </section>
           <section id="source">
             <p className="kicker">Official source</p>
@@ -134,12 +130,12 @@ export default async function Profile({ params }: { params: Promise<{ slug: stri
           <div className="profile-fact">
             <h3>At a glance</h3>
             <dl>
-              <div><dt>Full name</dt><dd>Jason Edward Salgado</dd></div>
+              <div><dt>Full name</dt><dd>{advisor.name}</dd></div>
               <div><dt>Firm</dt><dd>{advisor.firm}</dd></div>
-              <div><dt>Experience</dt><dd>27 years</dd></div>
-              <div><dt>State licenses</dt><dd>46</dd></div>
-              <div><dt>Disclosures</dt><dd>0 reported</dd></div>
-              <div><dt>CRD number</dt><dd>3047528</dd></div>
+              <div><dt>Experience</dt><dd>{advisor.years} years</dd></div>
+              <div><dt>State licenses</dt><dd>{advisor.stateLicenses}</dd></div>
+              <div><dt>Disclosures</dt><dd>{advisor.disclosures} reported</dd></div>
+              <div><dt>CRD number</dt><dd>{advisor.crd}</dd></div>
             </dl>
           </div>
           <div className="contact-card source-card">

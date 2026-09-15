@@ -1,2 +1,28 @@
-import type {MetadataRoute} from 'next';import {advisors,guides} from '@/lib/data';import {siteConfig} from '@/lib/site';
-export default function sitemap():MetadataRoute.Sitemap{const updated=new Date('2026-09-08');const core:MetadataRoute.Sitemap=[{url:siteConfig.url,lastModified:updated,changeFrequency:'weekly',priority:1},{url:`${siteConfig.url}/advisors`,lastModified:updated,changeFrequency:'weekly',priority:.9},{url:`${siteConfig.url}/match`,lastModified:updated,changeFrequency:'monthly',priority:.8},{url:`${siteConfig.url}/guides`,lastModified:updated,changeFrequency:'weekly',priority:.8},{url:`${siteConfig.url}/reviews`,lastModified:updated,changeFrequency:'monthly',priority:.6},{url:`${siteConfig.url}/for-advisors`,lastModified:updated,changeFrequency:'monthly',priority:.6}];const profiles=advisors.map(a=>({url:`${siteConfig.url}/advisors/${a.slug}`,lastModified:updated,changeFrequency:'weekly' as const,priority:.9}));const articles=guides.map(g=>({url:`${siteConfig.url}/guides/${g.slug}`,lastModified:updated,changeFrequency:'monthly' as const,priority:.7}));return[...core,...profiles,...articles]}
+import type {MetadataRoute} from 'next';
+import {advisors, guides} from '@/lib/data';
+import {siteConfig} from '@/lib/site';
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const updated = new Date('2026-09-15');
+  const core: MetadataRoute.Sitemap = [
+    {url: siteConfig.url, lastModified: updated, changeFrequency: 'weekly', priority: 1},
+    {url: `${siteConfig.url}/advisors`, lastModified: updated, changeFrequency: 'weekly', priority: .9},
+    {url: `${siteConfig.url}/match`, lastModified: updated, changeFrequency: 'monthly', priority: .8},
+    {url: `${siteConfig.url}/guides`, lastModified: updated, changeFrequency: 'weekly', priority: .8},
+    {url: `${siteConfig.url}/reviews`, lastModified: updated, changeFrequency: 'monthly', priority: .6},
+    {url: `${siteConfig.url}/for-advisors`, lastModified: updated, changeFrequency: 'monthly', priority: .6},
+  ];
+  const profiles = advisors.map((advisor) => ({
+    url: `${siteConfig.url}/advisors/${advisor.slug}`,
+    lastModified: updated,
+    changeFrequency: 'weekly' as const,
+    priority: .9,
+  }));
+  const articles = guides.map((guide) => ({
+    url: `${siteConfig.url}/guides/${guide.slug}`,
+    lastModified: updated,
+    changeFrequency: 'monthly' as const,
+    priority: .7,
+  }));
+  return [...core, ...profiles, ...articles];
+}
