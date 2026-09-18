@@ -51,7 +51,7 @@ export async function POST(request: Request) {
   try {
     await transporter.sendMail({
       from: `Advisor Registry <${SMTP_USER}>`,
-      to: advisor.contactEmail ?? CONTACT_EMAIL ?? SMTP_USER,
+      to: CONTACT_EMAIL ?? SMTP_USER,
       replyTo: email,
       subject: `Website inquiry: ${subject}`,
       text: [
