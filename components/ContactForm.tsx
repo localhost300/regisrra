@@ -3,7 +3,7 @@
 import {FormEvent, useState} from 'react';
 import {CheckCircle2, Send} from 'lucide-react';
 
-export default function ContactForm({advisorName}: {advisorName: string}) {
+export default function ContactForm({advisorName, advisorSlug}: {advisorName: string; advisorSlug: string}) {
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -20,7 +20,7 @@ export default function ContactForm({advisorName}: {advisorName: string}) {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({...payload, advisorName}),
+        body: JSON.stringify({...payload, advisorSlug}),
       });
 
       if (!response.ok) throw new Error();

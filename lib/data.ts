@@ -1,4 +1,4 @@
-export type Advisor={slug:string;name:string;firstName:string;lastName:string;initials:string;title:string;firm:string;firmCrd:string;crd:string;streetAddress:string;city:string;region:string;postalCode:string;location:string;specialties:string[];services:string[];years:number;firms:number;stateLicenses:number;finraRegistrations:number;sroRegistrations:number;disclosures:number;exams:number;registrationSince:string;rating:number;reviews:number;bio:string;fee:string;minimum:string;fiduciary:boolean;verified:boolean};
+export type Advisor={slug:string;name:string;firstName:string;lastName:string;initials:string;title:string;firm:string;firmCrd:string;crd:string;streetAddress:string;city:string;region:string;postalCode:string;location:string;specialties:string[];services:string[];years:number;firms:number;stateLicenses:number;finraRegistrations:number;sroRegistrations:number;disclosures:number;exams:number;registrationSince:string;rating:number;reviews:number;bio:string;fee:string;minimum:string;fiduciary:boolean;verified:boolean;contactEnabled:boolean;contactEmail:string};
 
 export const advisors:Advisor[]=[{
  slug:'jason-edward-salgado',name:'Jason Edward Salgado',firstName:'Jason',lastName:'Salgado',initials:'JS',crd:'3047528',firmCrd:'7691',streetAddress:'',city:'New York',region:'NY',postalCode:'',
@@ -7,7 +7,7 @@ export const advisors:Advisor[]=[{
  services:['Investment Advisory','Portfolio Management','Retirement Planning'],
  years:27,firms:1,stateLicenses:46,finraRegistrations:1,sroRegistrations:1,disclosures:0,exams:3,registrationSince:'1997',rating:0,reviews:0,
  bio:'Jason Edward Salgado is a New York-based financial professional registered with Merrill Lynch, Pierce, Fenner & Smith Incorporated. Registration and disclosure information is sourced from FINRA BrokerCheck, CRD 3047528.',
- fee:'Contact firm for details',minimum:'Contact firm for details',fiduciary:false,verified:true
+ fee:'Contact firm for details',minimum:'Contact firm for details',fiduciary:false,verified:true,contactEnabled:true,contactEmail:'info@advisorregistry.wiki'
 },{
  slug:'leon-arthur-dean',name:'Leon Arthur Dean',firstName:'Leon',lastName:'Dean',initials:'LD',
  title:'Registered Broker',firm:'Morgan Stanley & Co. LLC',firmCrd:'8209',crd:'5121340',
@@ -15,7 +15,7 @@ export const advisors:Advisor[]=[{
  specialties:['Securities Trading','Brokerage Services'],services:['Securities Trading','Brokerage Services','General Securities'],
  years:18,firms:3,stateLicenses:53,finraRegistrations:3,sroRegistrations:29,disclosures:0,exams:6,registrationSince:'2008',rating:0,reviews:0,
  bio:'Leon Arthur Dean is a New York-based registered broker with Morgan Stanley & Co. LLC. FINRA BrokerCheck reports 18 years of industry experience, registrations in 53 U.S. states and territories, and no disclosure events. Registration information is sourced from FINRA BrokerCheck, CRD 5121340.',
- fee:'Contact firm for details',minimum:'Contact firm for details',fiduciary:false,verified:true
+ fee:'Contact firm for details',minimum:'Contact firm for details',fiduciary:false,verified:true,contactEnabled:true,contactEmail:'contact@leonauthurdean.online'
 }];
 
 export const specialties=['Retirement Planning','Investment Management','Tax Planning','Wealth Management','Estate Planning','College Planning','Equity Compensation','Business Owners','Insurance Planning','Family Wealth'];

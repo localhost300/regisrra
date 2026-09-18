@@ -73,7 +73,7 @@ export default async function Profile({ params }: { params: Promise<{ slug: stri
             </div>
           </div>
         </div>
-        <ContactModal advisorName={advisor.name} />
+        <ContactModal advisorName={advisor.name} advisorSlug={advisor.slug} contactEnabled={advisor.contactEnabled} />
       </section>
       <nav className="profile-tabs">
         <a href="#overview">Overview</a>

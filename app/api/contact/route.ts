@@ -1,10 +1,11 @@
 import nodemailer from 'nodemailer';
 import {z} from 'zod';
+import {advisors} from '@/lib/data';
 
 export const runtime = 'nodejs';
 
 const contactSchema = z.object({
-  advisorName: z.string().trim().min(1).max(120),
+  advisorSlug: z.string().trim().min(1).max(120),
   fullName: z.string().trim().min(1).max(120),
   email: z.email().max(254),
   phone: z.string().trim().min(1).max(40),
@@ -27,13 +28,19 @@ export async function POST(request: Request) {
     return Response.json({error: 'Invalid form submission.'}, {status: 400});
   }
 
+  const advisor = advisors.find(({slug}) => slug === parsed.data.advisorSlug);
+  if (!advisor?.contactEnabled) {
+    return Response.json({error: 'Contact is not available for this profile.'}, {status: 403});
+  }
+
   const {SMTP_HOST, SMTP_PASSWORD, SMTP_PORT, SMTP_USER, CONTACT_EMAIL} = process.env;
   if (!SMTP_HOST || !SMTP_PASSWORD || !SMTP_USER) {
     return Response.json({error: 'Email service is not configured.'}, {status: 500});
   }
 
   const port = Number(SMTP_PORT ?? 587);
-  const {advisorName, fullName, email, phone, location, subject, message} = parsed.data;
+  const {fullName, email, phone, location, subject, message} = parsed.data;
+  const advisorName = advisor.name;
   const transporter = nodemailer.createTransport({
     host: SMTP_HOST,
     port,
@@ -44,7 +51,7 @@ export async function POST(request: Request) {
   try {
     await transporter.sendMail({
       from: `Advisor Registry <${SMTP_USER}>`,
-      to: CONTACT_EMAIL ?? SMTP_USER,
+      to: advisor.contactEmail ?? CONTACT_EMAIL ?? SMTP_USER,
       replyTo: email,
       subject: `Website inquiry: ${subject}`,
       text: [
