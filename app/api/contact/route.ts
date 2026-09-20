@@ -11,7 +11,7 @@ const contactSchema = z.object({
   phone: z.string().trim().min(1).max(40),
   location: z.string().trim().min(1).max(160),
   subject: z.string().trim().min(1).max(160),
-  message: z.string().trim().min(20).max(5000),
+  message: z.string().trim().min(1).max(5000),
 });
 
 function escapeHtml(value: string) {
