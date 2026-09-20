@@ -73,7 +73,7 @@ export default function ContactForm({advisorName, advisorSlug}: {advisorName: st
       </label>
       <label>
         Message
-        <textarea name="message" required rows={5} minLength={20} />
+        <textarea name="message" required rows={5} />
       </label>
       {error && <p role="alert">{error}</p>}
       <button className="btn full" type="submit" disabled={submitting}>
