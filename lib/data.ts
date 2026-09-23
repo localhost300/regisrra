@@ -38,59 +38,6 @@ contactEmail:string;
 export const advisors:Advisor[]=[
 
 {
-slug:'jason-edward-salgado',
-name:'Jason Edward Salgado',
-firstName:'Jason',
-lastName:'Salgado',
-initials:'JS',
-crd:'3047528',
-firmCrd:'7691',
-streetAddress:'',
-city:'New York',
-region:'NY',
-postalCode:'',
-
-title:'Financial Advisor',
-firm:'Merrill Lynch, Pierce, Fenner & Smith Incorporated',
-
-location:'New York, NY',
-
-specialties:[
-'Investment Advisory',
-'Portfolio Management'
-],
-
-services:[
-'Investment Advisory',
-'Portfolio Management',
-'Retirement Planning'
-],
-
-years:27,
-firms:1,
-stateLicenses:46,
-finraRegistrations:1,
-sroRegistrations:1,
-disclosures:0,
-exams:3,
-registrationSince:'1997',
-rating:0,
-reviews:0,
-
-bio:'Jason Edward Salgado is a New York-based financial professional registered with Merrill Lynch, Pierce, Fenner & Smith Incorporated. Registration and disclosure information is sourced from FINRA BrokerCheck, CRD 3047528.',
-
-fee:'Contact firm for details',
-minimum:'Contact firm for details',
-
-fiduciary:false,
-verified:true,
-contactEnabled:true,
-
-contactEmail:'info@advisorregistry.wiki'
-
-},
-
-{
 
 slug:'leon-arthur-dean',
 name:'Leon Arthur Dean',
@@ -141,7 +88,7 @@ fiduciary:false,
 verified:true,
 contactEnabled:true,
 
-contactEmail:'contact@leonauthurdean.online'
+contactEmail:'info@advisorregistry.wiki'
 
 }
 
