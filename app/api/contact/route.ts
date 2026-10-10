@@ -76,6 +76,14 @@ export async function POST(request: Request) {
 
   const port = Number(SMTP_PORT ?? 587);
 
+  if (!Number.isInteger(port) || port < 1 || port > 65535) {
+    console.error('Contact email configuration error: SMTP_PORT is invalid.');
+    return Response.json(
+      { error: 'Email service is not configured correctly.' },
+      { status: 500 }
+    );
+  }
+
 
   const {
     fullName,
@@ -102,6 +110,10 @@ export async function POST(request: Request) {
       user: SMTP_USER,
       pass: SMTP_PASSWORD,
     },
+
+    connectionTimeout: 10_000,
+    greetingTimeout: 10_000,
+    socketTimeout: 20_000,
 
   });
 
@@ -188,10 +200,24 @@ export async function POST(request: Request) {
     });
 
 
-  } catch {
+  } catch (error) {
+
+    const mailError = error as {
+      code?: string;
+      command?: string;
+      responseCode?: number;
+      message?: string;
+    };
+
+    console.error('Contact email failed.', {
+      code: mailError.code,
+      command: mailError.command,
+      responseCode: mailError.responseCode,
+      message: mailError.message,
+    });
 
     return Response.json(
-      { error: 'Unable to send message.' },
+      { error: 'The email service is temporarily unavailable. Please try again later.' },
       { status: 502 }
     );
 

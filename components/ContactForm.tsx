@@ -23,12 +23,16 @@ export default function ContactForm({advisorName, advisorSlug}: {advisorName: st
         body: JSON.stringify({...payload, advisorSlug}),
       });
 
-      if (!response.ok) throw new Error();
+      const result = (await response.json().catch(() => null)) as {error?: string} | null;
+
+      if (!response.ok) {
+        throw new Error(result?.error ?? 'Unable to send your message. Please try again.');
+      }
 
       form.reset();
       setSent(true);
-    } catch {
-      setError('Unable to send your message. Please try again.');
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Unable to send your message. Please try again.');
     } finally {
       setSubmitting(false);
     }
